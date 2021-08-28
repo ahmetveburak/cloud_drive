@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load static %}
+{% load martortags %}
+
+{% block css %}
+  <link href="{% static 'plugins/css/ace.min.css' %}" type="text/css" media="all" rel="stylesheet" />
+  <link href="{% static 'martor/css/martor.bootstrap.min.css' %}" type="text/css" media="all" rel="stylesheet" />
+{% endblock %}
+
+{% block content %}
+  <div class="martor-preview">
+    <h1>Title: {{ object.name }}</h1>
+    <hr/>
+    <a href="{{object.file.url}}" class="btn btn-secondary px-4 py-2 btn-sm" download>Download</a>
+    {% comment %} <a href="{% url object.file.url %}" class="btn btn-secondary px-4 py-2 btn-sm">Download CV</a> {% endcomment %}
+
+  </div>
+{% endblock %}
+
+{% block js %}
+  <script type="text/javascript" src="{% static 'plugins/js/highlight.min.js' %}"></script>
+  <script>
+    $('.martor-preview pre').each(function(i, block){
+        hljs.highlightBlock(block);
+    });
+  </script>
+{% endblock %}

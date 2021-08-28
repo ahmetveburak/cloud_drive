@@ -1,2 +1,1 @@
-# cloud_drive
-Django Drive App
+# Simple Cloud Test App
