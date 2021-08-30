@@ -1,15 +1,16 @@
 from django.db import models
 from django.utils import timezone
 from django.utils.crypto import get_random_string
+from django.utils.translation import gettext as _
 
 
 class Token(models.Model):
-    token = models.CharField(max_length=32, default=get_random_string(length=32), verbose_name="Token")
-    counter = models.SmallIntegerField(default=0)
+    token = models.CharField(_("Token"), max_length=32, unique=True, default=get_random_string(length=32))
+    counter = models.SmallIntegerField(_("View Count"), default=0)
 
-    enabled_count = models.SmallIntegerField(default=0)
-    enabled_to = models.DateTimeField(blank=True, null=True)
-    is_enabled = models.BooleanField(default=True)
+    enabled_count = models.SmallIntegerField(_("View Limit"), default=0)
+    enabled_to = models.DateTimeField(_("Expiration Date"), blank=True, null=True)
+    is_enabled = models.BooleanField(_("Active Status"), default=True)
 
     created = models.DateTimeField(auto_now=True)
 
