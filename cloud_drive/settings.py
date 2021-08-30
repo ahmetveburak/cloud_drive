@@ -135,3 +135,7 @@ MEDIA_URL = "/media/"
 
 
 AUTH_USER_MODEL = "profiles.User"
+
+LOGIN_REDIRECT_URL = "posts"
+LOGIN_URL = "login"
+LOGOUT_URL = "logout"
