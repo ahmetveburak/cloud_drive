@@ -1,3 +1,4 @@
+{% extends 'base.html' %}
 {% load static %}
 
 <!DOCTYPE html>
@@ -9,11 +10,14 @@
   <title>File</title>
 </head>
 <body>
-  <form method = "post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <p> <input type = "submit" value = "post"> </p>
-  </form>
+  {% block content %}
+    <form action="" method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+    </form>
+  
+  {% endblock content %}
+
   
 </body>
 </html>

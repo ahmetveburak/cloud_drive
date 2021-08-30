@@ -2,17 +2,80 @@
 {% load static %}
 {% load martortags %}
 
+
 {% block css %}
   <link href="{% static 'plugins/css/ace.min.css' %}" type="text/css" media="all" rel="stylesheet" />
   <link href="{% static 'martor/css/martor.bootstrap.min.css' %}" type="text/css" media="all" rel="stylesheet" />
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
 {% endblock %}
 
 {% block content %}
   <div class="martor-preview">
-    <h1>Title: {{ post.title }}</h1>
+    <h1>{{ post.title }}</h1>
     <hr />
     {{ post.content|safe_markdown }}
   </div>
+
+
+
+  {% if user.is_authenticated %}
+
+    <div class="row align-items-center">
+      <span><a href="{% url 'post-edit' object.id %}"><input type="button" value="Edit"></a></span>
+      <span><p>Is Private: <input type="checkbox" {% if object.is_private %}checked{% endif %} disabled></p></span>
+    </div>
+
+    <div class="row align-items-center">
+    <div class="col-6 align-self-center"><p>URL Token</p></div>
+    <div class="col-2 align-self-center"><p>View Count</p></div>
+    <div class="col-2 align-self-center"><p>Expiration Count</p></div>
+    <div class="col-2 align-self-center"><p>Expiration Time</p></div>
+    </div>
+    
+    <div class="row align-items-center">
+    {% for token in object.token.all %}
+
+      <div class="col-6 align-self-center">
+        <input type="text" value="post/{{ object.slug }}/?token={{ token.token }}" style="width:100%;" readonly>
+      </div>
+      
+      {% if token.enabled_count > 0 %}
+
+        <div class="col-2 align-self-center">
+          <p>{{ token.counter }}</p>
+        </div>
+        <div class="col-2 align-self-center">
+          <p>{{ token.enabled_count }}</p>
+        </div> 
+
+      {% else %}  
+
+        <div class="col-2 align-self-center">
+          <p>-</p>
+        </div>
+        <div class="col-2 align-self-center">
+          <p>-</p>
+        </div> 
+
+      {% endif %}
+
+      {% if token.enabled_to %}
+
+        <div class="col-2 align-self-center">
+          <p>{{ token.enabled_to|date:"d/m/Y H:i:s" }}</p>
+        </div>
+
+      {% else %}
+
+        <div class="col-2 align-self-center">
+          <p>-</p>
+        </div>
+
+      {% endif %}
+    {% endfor %}
+    </div>
+
+  {% endif %}
 {% endblock %}
 
 {% block js %}

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load static %}
+{% load martortags %}
+
+{% block css %}
+  <link href="{% static 'plugins/css/ace.min.css' %}" type="text/css" media="all" rel="stylesheet" />
+  <link href="{% static 'martor/css/martor.bootstrap.min.css' %}" type="text/css" media="all" rel="stylesheet" />
+{% endblock %}
+
+{% block content %}
+
+  <table class="table table-dark table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Title</th>
+        <th scope="col">Private</th>
+        <th scope="col">Tokens</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for object in object_list %}
+        <tr>
+          <td><a href="{% url 'post-detail' object.slug %}">{{ object.title }}</a></td>
+          <td>{{ object.is_private }}</td>
+          <td>{{ object.token.all|length }}</td>
+        </tr>
+      {% endfor %}
+      
+    </tbody>
+  </table>
+
+{% endblock %}
