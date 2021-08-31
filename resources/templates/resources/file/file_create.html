@@ -11,11 +11,13 @@
 </head>
 <body>
   {% block content %}
-    <form action="" method="post">
+
+    <form action="" enctype="multipart/form-data" method="post">
       {% csrf_token %}
       {{ form.as_p }}
-    </form>
-  
+      <p> <input type = "submit" value = "Save"> </p>
+    </form>  
+
   {% endblock content %}
 
   

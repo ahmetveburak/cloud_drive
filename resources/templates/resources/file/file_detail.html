@@ -15,6 +15,65 @@
     {% comment %} <a href="{% url object.file.url %}" class="btn btn-secondary px-4 py-2 btn-sm">Download CV</a> {% endcomment %}
 
   </div>
+
+  {% if user.is_authenticated %}
+
+    <div class="row align-items-center">
+      <span><a href="{% url 'file-edit' object.id %}"><input type="button" value="Edit"></a></span>
+      <span><p>Is Private: <input type="checkbox" {% if object.is_private %}checked{% endif %} disabled></p></span>
+    </div>
+
+    <div class="row align-items-center">
+    <div class="col-6 align-self-center"><p>URL Token</p></div>
+    <div class="col-2 align-self-center"><p>View Count</p></div>
+    <div class="col-2 align-self-center"><p>Expiration Count</p></div>
+    <div class="col-2 align-self-center"><p>Expiration Time</p></div>
+    </div>
+    
+    <div class="row align-items-center">
+    {% for token in object.token.all %}
+
+      <div class="col-6 align-self-center">
+        <input type="text" value="file/{{ object.slug }}/?token={{ token.token }}" style="width:100%;" readonly>
+      </div>
+      
+      {% if token.enabled_count > 0 %}
+
+        <div class="col-2 align-self-center">
+          <p>{{ token.counter }}</p>
+        </div>
+        <div class="col-2 align-self-center">
+          <p>{{ token.enabled_count }}</p>
+        </div> 
+
+      {% else %}  
+
+        <div class="col-2 align-self-center">
+          <p>-</p>
+        </div>
+        <div class="col-2 align-self-center">
+          <p>-</p>
+        </div> 
+
+      {% endif %}
+
+      {% if token.enabled_to %}
+
+        <div class="col-2 align-self-center">
+          <p>{{ token.enabled_to|date:"d/m/Y H:i:s" }}</p>
+        </div>
+
+      {% else %}
+
+        <div class="col-2 align-self-center">
+          <p>-</p>
+        </div>
+
+      {% endif %}
+    {% endfor %}
+    </div>
+
+  {% endif %}
 {% endblock %}
 
 {% block js %}
