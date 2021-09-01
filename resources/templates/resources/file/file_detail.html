@@ -10,9 +10,12 @@
 {% block content %}
   <div class="martor-preview">
     <h1>Title: {{ object.name }}</h1>
+    {% if first_token.token == 1 %}
+      <h2>First view of this file, please save your link before leave this page.</h2>
+    {% endif %}
+    
     <hr/>
     <a href="{{object.file.url}}" class="btn btn-secondary px-4 py-2 btn-sm" download>Download</a>
-    {% comment %} <a href="{% url object.file.url %}" class="btn btn-secondary px-4 py-2 btn-sm">Download CV</a> {% endcomment %}
 
   </div>
 
