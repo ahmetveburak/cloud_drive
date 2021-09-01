@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "resources.apps.ResourcesConfig",
     "tokens.apps.TokensConfig",
     "martor",
+    "tempus_dominus",
 ]
 
 MIDDLEWARE = [
@@ -110,7 +111,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "Europe/Istanbul"
 
 USE_I18N = True
 
@@ -136,6 +137,6 @@ MEDIA_URL = "/media/"
 
 AUTH_USER_MODEL = "profiles.User"
 
-LOGIN_REDIRECT_URL = "posts"
+LOGIN_REDIRECT_URL = "index"
 LOGIN_URL = "login"
 LOGOUT_URL = "logout"
