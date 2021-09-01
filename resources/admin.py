@@ -1,7 +1,6 @@
 from django.contrib import admin
 from django.db import models
 from martor.widgets import AdminMartorWidget
-from tokens.models import Token
 
 from resources.models import File, Post
 
@@ -49,4 +48,3 @@ class FileAdmin(admin.ModelAdmin):
     )
 
     inlines = (FileTokenInline,)
-    pass

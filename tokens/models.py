@@ -5,7 +5,7 @@ from django.utils.translation import gettext as _
 
 
 class Token(models.Model):
-    token = models.CharField(_("Token"), max_length=32, unique=True, default=get_random_string(length=32))
+    token = models.CharField(_("Token"), max_length=32, unique=True)
     counter = models.SmallIntegerField(_("View Count"), default=0)
 
     enabled_count = models.SmallIntegerField(_("View Limit"), default=0)
@@ -16,6 +16,11 @@ class Token(models.Model):
 
     def __str__(self) -> str:
         return f"{self.id} | {self.token[:10]}"
+
+    def save(self, *args, **kwargs) -> None:
+        if not self.token:
+            self.token = get_random_string(length=32)
+        return super().save(*args, **kwargs)
 
     def is_accessible(self) -> bool:
         if self.is_enabled:
