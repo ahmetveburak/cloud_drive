@@ -45,6 +45,8 @@ class FileTokenCreate(TemplateView):
         new_file = File(name=file_name, file=file, is_private=is_private)
         new_file.save()
 
+        file_url = reverse("file-detail", kwargs={"slug": new_file.slug})
+
         if is_private:
             exp_date = data.get("token-enabled_to")
             if exp_date:
@@ -59,23 +61,14 @@ class FileTokenCreate(TemplateView):
             new_token.save()
             new_file.token.add(new_token)
 
-            file_url = reverse("file-detail", kwargs={"slug": new_file.slug})
             return redirect(f"{file_url}?token={new_token.token}")
 
-        return redirect("file-detail", new_file.slug)
+        return redirect(file_url)
 
 
 class FileDetailView(DetailView):
     template_name = "resources/file/file_detail.html"
     model = File
-
-    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
-        context = super().get_context_data(**kwargs)
-
-        first_token = context["file"].token.first()
-        if first_token:
-            context["first_token"] = first_token
-        return context
 
     def get_object(self, queryset=None):
         obj: File = super(FileDetailView, self).get_object(queryset=queryset)

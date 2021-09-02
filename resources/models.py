@@ -1,5 +1,8 @@
+from datetime import timedelta
+
 from django.db import models
 from django.urls import reverse
+from django.utils import timezone
 from django.utils.crypto import get_random_string
 from django.utils.text import slugify
 from django.utils.translation import gettext as _
@@ -46,7 +49,7 @@ class File(models.Model):
     def save(self, *args, **kwargs) -> None:
         if not self.name:
             self.name = self.file.name
-            self.slug = slugify(self.name) + get_random_string(4)
+        self.slug = slugify(self.name) + get_random_string(4)
 
         super().save(*args, **kwargs)
 
@@ -55,3 +58,9 @@ class File(models.Model):
 
     def get_absolute_url(self):
         return reverse("file-detail", kwargs={"slug": self.slug})
+
+    def is_recent(self) -> bool:
+        time_delta: timedelta = timezone.now() - self.created
+        if time_delta.total_seconds() < 3:
+            return True
+        return False
