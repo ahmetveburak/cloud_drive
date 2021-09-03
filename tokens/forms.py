@@ -11,3 +11,19 @@ class TokenCreateForm(forms.Form):
             attrs={"append": "fa fa-calendar", "icon_toggle": True, "size": "small"},
         ),
     )
+
+
+class TokenAdminFrom(forms.ModelForm):
+    token = forms.CharField(
+        label="Dosya Adı",
+        widget=forms.TextInput(attrs={"size": 35, "readonly": True}),
+        help_text="This token generated automatically.",
+    )
+
+    fields = (
+        "token",
+        "counter",
+        "enabled_count",
+        "enabled_to",
+        "is_enabled",
+    )

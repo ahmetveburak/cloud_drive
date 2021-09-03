@@ -1,6 +1,5 @@
 from django.db import models
 from django.utils import timezone
-from django.utils.crypto import get_random_string
 from django.utils.translation import gettext as _
 
 
@@ -16,11 +15,6 @@ class Token(models.Model):
 
     def __str__(self) -> str:
         return f"{self.id} | {self.token[:10]}"
-
-    def save(self, *args, **kwargs) -> None:
-        if not self.token:
-            self.token = get_random_string(length=32)
-        return super().save(*args, **kwargs)
 
     def is_accessible(self) -> bool:
         if self.is_enabled:
