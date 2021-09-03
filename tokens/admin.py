@@ -14,6 +14,12 @@ from tokens.models import Token
 @admin.register(Token)
 class TokenAdmin(admin.ModelAdmin):
     form = TokenAdminFrom
+    fields = (
+        "token",
+        "enabled_count",
+        "enabled_to",
+        "is_enabled",
+    )
 
     def get_form(self, request: HttpRequest, obj=None, **kwargs: Any):
         form = super().get_form(request, obj=obj, **kwargs)

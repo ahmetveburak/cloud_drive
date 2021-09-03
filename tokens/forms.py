@@ -19,11 +19,3 @@ class TokenAdminFrom(forms.ModelForm):
         widget=forms.TextInput(attrs={"size": 35, "readonly": True}),
         help_text="This token generated automatically.",
     )
-
-    fields = (
-        "token",
-        "counter",
-        "enabled_count",
-        "enabled_to",
-        "is_enabled",
-    )
