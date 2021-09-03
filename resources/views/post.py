@@ -1,20 +1,59 @@
+from typing import Any, Dict
+
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.views import LoginView, LogoutView
 from django.http.request import HttpRequest
 from django.http.response import Http404, HttpResponse
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
+from django.utils import timezone
+from django.utils.dateparse import parse_datetime
 from django.views.generic import CreateView, DetailView
-from django.views.generic.base import TemplateResponseMixin, View
 from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
-from resources.models import File, Post
+from resources.models import Post
+from tokens.forms import TokenCreateForm
+from tokens.models import Token
 
 
 class PostCreateView(CreateView):
     template_name = "resources/post/post_create.html"
     model = Post
-    fields = ("title", "content", "is_private", "token")
+    fields = ("title", "content", "is_private")
+
+    def get_context_data(self, **kwargs) -> Dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context["token_form"] = TokenCreateForm(prefix="token")
+        return context
+
+    def post(self, request: HttpRequest, *args: str, **kwargs: Any) -> HttpResponse:
+        data = request.POST
+
+        post_title = data.get("title")
+        post_content = data.get("content")
+
+        is_private = True if data.get("is_private") else False
+        new_post = Post(title=post_title, content=post_content, is_private=is_private)
+        new_post.save()
+
+        post_url = reverse("post-detail", kwargs={"pk": new_post.id, "slug": new_post.slug})
+
+        if is_private:
+            exp_date = data.get("token-enabled_to")
+            if exp_date:
+                exp_date = timezone.make_aware(parse_datetime(exp_date))
+
+            exp_count = data.get("token-enabled_count")
+
+            new_token = Token(
+                enabled_count=int(exp_count) if exp_count else 0,
+                enabled_to=exp_date if exp_date else None,
+            )
+            new_token.save()
+            new_post.token.add(new_token)
+
+            return redirect(f"{post_url}?token={new_token.token}")
+
+        return redirect(post_url)
 
 
 class PostDetailView(DetailView):
@@ -37,7 +76,11 @@ class PostDetailView(DetailView):
         return obj
 
 
-class PostEditView(UpdateView):
+class PostDetailAdminView(LoginRequiredMixin, PostDetailView):
+    pass
+
+
+class PostEditView(LoginRequiredMixin, UpdateView):
     template_name = "resources/post/post_create.html"
     model = Post
     fields = ("title", "content", "is_private", "token")
