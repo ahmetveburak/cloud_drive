@@ -21,22 +21,88 @@
 <body>
   {% block content %}
 
+    <div class="row justify-content-center">
+      <h2>Upload File</h2>
+    </div>
+
+    
+
     <form action="" enctype="multipart/form-data" method="post">
       {% csrf_token %}
-      {{ file_form.as_p }}
+      <div class="row">
 
-      <hr>
-      <div class="row align-items-start">
-        <div class="col-3">
-        {{ token_form.enabled_count }}
+        <div class="col-2"></div>
+
+        <div class="col-4">
+
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">Filename</span>
+            {{ file_form.name }}
+          </div>
+
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
+            </div>
+            <div class="custom-file">
+              {{ file_form.file }}
+              <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+            </div>
+          </div>
+        
         </div>
-        <div class="col-3">
-        {{ token_form.enabled_to }}
+
+        <div class="col-4">
+          <div class="input-group mb-3">
+            <div class="col-5">
+              <div class="input-group">
+                <span class="input-group-text" id="basic-addon1">Private</span>
+                <div class="input-group-append">
+                  <div class="input-group-text">
+                    {{ file_form.is_private }}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-7">
+              <div class="input-group">
+                {{ token_form.enabled_count }}
+              </div>   
+            </div>
+          </div>
+
+          <div class="col-12">
+            <div class="input-group mb-3">
+              {{ token_form.enabled_to}}
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="row">
+        <div class="col-2"></div>
+        <div class="col-8">
+          
+            <input class="btn btn-danger" style="width:98%;" type="submit" value="Upload File">
+          
         </div>
       </div>
       
-      <p> <input type = "submit" value = "Save"> </p>
     </form>  
+
+    <hr>
+    {% comment %} <div class="row justify-content-center">
+      <h2>Create New Markdown</h2>
+    </div> {% endcomment %}
+    
+    <div class="row">
+      <div class="col-2"></div>
+      <div class="col-8">
+        <a href="{% url 'post-create' %}"><button type="button" style="width:98%;" class="btn btn-primary">Create New Markdown</button></a>
+      </div>
+    </div>
 
   {% endblock content %}
 

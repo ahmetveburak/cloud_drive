@@ -9,81 +9,54 @@
 
 {% block content %}
   <div class="martor-preview">
-    <h1>Title: {{ object.name }}</h1>
+    <h1>Filename: {{ object.name }}</h1>
     {% if object.is_recent %}
       <p>First view of this file, please save your link before leave this page.</p>
     {% endif %}
     
     <hr/>
-    <a href="{{object.file.url}}" class="btn btn-secondary px-4 py-2 btn-sm" download>Download</a>
+    <a href="{{object.file.url}}" class="btn btn-secondary px-4 py-2" download>Download File</a>
 
   </div>
 
   {% if user.is_authenticated %}
 
-    <div class="row align-items-center">
-      <span><a href="{% url 'file-edit' object.id %}"><input type="button" value="Edit"></a></span>
-      <span><p>Is Private: <input type="checkbox" {% if object.is_private %}checked{% endif %} disabled></p></span>
-    </div>
-
-    <div class="row align-items-center">
-    <div class="col-6 align-self-center"><p>URL Token</p></div>
-    <div class="col-2 align-self-center"><p>View Count</p></div>
-    <div class="col-2 align-self-center"><p>Expiration Count</p></div>
-    <div class="col-2 align-self-center"><p>Expiration Time</p></div>
-    </div>
-    
-    <div class="row align-items-center">
-    {% for token in object.token.all %}
-
-      <div class="col-6 align-self-center">
-        <input type="text" value="file/{{ object.slug }}/?token={{ token.token }}" style="width:100%;" readonly>
+    <div class="row justify-content-end mb-3">
+      <div class="col-3">
+        <span><a href="{% url 'file-edit' object.id %}"><input type="button" class="btn btn-secondary" style="width:100%;" value="Edit"></a></span>
       </div>
       
-      {% if token.enabled_count > 0 %}
-
-        <div class="col-2 align-self-center">
-          <p>{{ token.counter }}</p>
-        </div>
-        <div class="col-2 align-self-center">
-          <p>{{ token.enabled_count }}</p>
-        </div> 
-
-      {% else %}  
-
-        <div class="col-2 align-self-center">
-          <p>-</p>
-        </div>
-        <div class="col-2 align-self-center">
-          <p>-</p>
-        </div> 
-
-      {% endif %}
-
-      {% if token.enabled_to %}
-
-        <div class="col-2 align-self-center">
-          <p>{{ token.enabled_to|date:"d/m/Y H:i:s" }}</p>
-        </div>
-
-      {% else %}
-
-        <div class="col-2 align-self-center">
-          <p>-</p>
-        </div>
-
-      {% endif %}
-    {% endfor %}
+      
     </div>
 
+    {% if object.get_token_count > 0 %}
+      <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Url Token</th>
+          <th scope="col">View Count</th>
+          <th scope="col">End Count</th>
+          <th scope="col">End Time</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for token in object.token.all %}
+        <tr>
+          <th scope="row">1</th>
+          {% if  request.GET.token  %}
+            <td>{{ request.build_absolute_uri }}</td>
+          {% else %}
+            <td>{{ request.build_absolute_uri }}?token={{ token.token }}"</td>
+          {% endif %}
+          <td>{{ token.counter }}</td>
+          <td>{{ token.enabled_count }}</td>
+          <td>{{ token.enabled_to }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    
+    {% endif %}
   {% endif %}
-{% endblock %}
-
-{% block js %}
-  <script type="text/javascript" src="{% static 'plugins/js/highlight.min.js' %}"></script>
-  <script>
-    $('.martor-preview pre').each(function(i, block){
-        hljs.highlightBlock(block);
-    });
-  </script>
 {% endblock %}
