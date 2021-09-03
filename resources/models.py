@@ -3,7 +3,6 @@ from datetime import timedelta
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
-from django.utils.crypto import get_random_string
 from django.utils.text import slugify
 from django.utils.translation import gettext as _
 from martor.models import MartorField
@@ -29,7 +28,20 @@ class Post(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse("post-detail", kwargs={"slug": self.slug})
+        return reverse("post-detail", kwargs={"pk": self.id, "slug": self.slug})
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
+
+    def get_token_count(self) -> int:
+        return len(self.token.all())
+
+    def is_recent(self) -> bool:
+        time_delta: timedelta = timezone.now() - self.created
+        if time_delta.total_seconds() < 3:
+            return True
+        return False
 
 
 class File(models.Model):
@@ -49,7 +61,7 @@ class File(models.Model):
     def save(self, *args, **kwargs) -> None:
         if not self.name:
             self.name = self.file.name
-        self.slug = slugify(self.name) + get_random_string(4)
+        self.slug = slugify(self.name)
 
         super().save(*args, **kwargs)
 
@@ -57,7 +69,10 @@ class File(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse("file-detail", kwargs={"slug": self.slug})
+        return reverse("file-detail", kwargs={"pk": self.id, "slug": self.slug})
+
+    def get_token_count(self) -> int:
+        return len(self.token.all())
 
     def is_recent(self) -> bool:
         time_delta: timedelta = timezone.now() - self.created
