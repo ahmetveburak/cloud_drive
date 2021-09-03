@@ -15,12 +15,17 @@ class PostTokenInline(admin.StackedInline):
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
+    list_display = ("title", "is_private", "get_token_count")
+    list_filter = ("is_private",)
+    search_fields = ("title", "content")
     fields = (
+        "id",
         "title",
         "slug",
         "content",
         "is_private",
     )
+    readonly_fields = ("id",)
 
     formfield_overrides = {
         models.TextField: {"widget": AdminMartorWidget},
@@ -41,10 +46,15 @@ class FileTokenInline(admin.StackedInline):
 
 @admin.register(File)
 class FileAdmin(admin.ModelAdmin):
+    list_display = ("name", "is_private", "get_token_count", "is_deleted")
+    list_filter = ("is_private",)
+    search_fields = ("name",)
     fields = (
+        "id",
         "name",
         "file",
         "is_private",
     )
+    readonly_fields = ("id",)
 
     inlines = (FileTokenInline,)
