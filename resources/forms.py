@@ -2,8 +2,21 @@ from django import forms
 from martor.fields import MartorFormField
 
 
-class PostForm(forms.Form):
+class PostCreateForm(forms.Form):
+    title = forms.CharField(
+        required=True,
+        widget=forms.TextInput(
+            attrs={
+                "type": "text",
+                "class": "form-control",
+                "aria-label": "postname",
+                "aria-describedby": "basic-addon1",
+                "placeholder": "Post title is required",
+            }
+        ),
+    )
     content = MartorFormField()
+    is_private = forms.BooleanField(required=False)
 
 
 class FileCreateForm(forms.Form):

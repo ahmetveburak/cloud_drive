@@ -6,10 +6,12 @@ from django.http.response import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
 from django.utils import timezone
+from django.utils.crypto import get_random_string
 from django.utils.dateparse import parse_datetime
 from django.views.generic import CreateView, DetailView
 from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
+from resources.forms import PostCreateForm
 from resources.models import Post
 from tokens.forms import TokenCreateForm
 from tokens.models import Token
@@ -22,16 +24,17 @@ class PostCreateView(CreateView):
 
     def get_context_data(self, **kwargs) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
+        context["post_form"] = PostCreateForm(prefix="post")
         context["token_form"] = TokenCreateForm(prefix="token")
         return context
 
     def post(self, request: HttpRequest, *args: str, **kwargs: Any) -> HttpResponse:
         data = request.POST
 
-        post_title = data.get("title")
-        post_content = data.get("content")
+        post_title = data.get("post-title")
+        post_content = data.get("post-content")
 
-        is_private = True if data.get("is_private") else False
+        is_private = True if data.get("post-is_private") else False
         new_post = Post(title=post_title, content=post_content, is_private=is_private)
         new_post.save()
 
@@ -45,6 +48,7 @@ class PostCreateView(CreateView):
             exp_count = data.get("token-enabled_count")
 
             new_token = Token(
+                token=get_random_string(length=32),
                 enabled_count=int(exp_count) if exp_count else 0,
                 enabled_to=exp_date if exp_date else None,
             )

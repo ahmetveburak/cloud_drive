@@ -20,7 +20,7 @@
     <tbody>
       {% for object in object_list %}
         <tr>
-          <td><a href="{% url 'post-detail' object.slug %}">{{ object.title }}</a></td>
+          <td><a href="{% url 'post-detail' object.id object.slug %}">{{ object.title }}</a></td>
           <td>{{ object.is_private }}</td>
           <td>{{ object.token.all|length }}</td>
         </tr>
