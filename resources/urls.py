@@ -1,4 +1,3 @@
-from django.contrib.auth import views as auth_views
 from django.urls import path
 
 from resources.views import file, index, post
@@ -18,7 +17,4 @@ urlpatterns = [
     path("file/<int:pk>/", file.FileDetailAdminView.as_view(), name="file-detail-admin"),
     path("file/edit/<int:pk>/", file.FileEditView.as_view(), name="file-edit"),
     path("files/", file.FileListView.as_view(), name="file-list"),
-    #
-    path("login/", auth_views.LoginView.as_view(template_name="resources/registration/login.html"), name="login"),
-    path("logout/", auth_views.LogoutView.as_view(template_name="resources/registration/logout.html"), name="logout"),
 ]

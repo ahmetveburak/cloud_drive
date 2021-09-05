@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "tokens.apps.TokensConfig",
     "martor",
     "tempus_dominus",
+    "widget_tweaks",
 ]
 
 MIDDLEWARE = [
@@ -123,6 +124,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
 STATIC_URL = "/static/"
 
 # Default primary key field type
@@ -139,4 +141,5 @@ AUTH_USER_MODEL = "profiles.User"
 
 LOGIN_REDIRECT_URL = "index"
 LOGIN_URL = "login"
+LOGOUT_REDIRECT_URL = "index"
 LOGOUT_URL = "logout"

@@ -22,6 +22,7 @@ from django.urls.conf import include
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("resources.urls")),
+    path("", include("profiles.urls")),
     path("martor/", include("martor.urls")),
 ]
 

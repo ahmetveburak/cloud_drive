@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block content %}
+
+
+  <div class="container w-50">
+
+    <form action="{% url 'login' %}" method="post">
+      {% csrf_token %}
+      <div class="form-floating mb-2">
+        {% render_field form.username class="form-control" id="floatingInput" placeholder="Username" %}
+      </div>
+      <div class="form-floating mb-3">
+        {% render_field form.password  type="password" class="form-control" id="floatingPassword" placeholder="Password"%}
+      </div>
+      <input type="hidden" name="next" value="{{ next }}">
+      <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
+    </form>
+
+  </div>
+  
+{% endblock content %}

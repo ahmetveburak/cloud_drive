@@ -10,6 +10,7 @@ python = "^3.9"
 Django = "^3.2.6"
 martor = "^1.6.4"
 django-tempus-dominus = "^5.1.2"
+django-widget-tweaks = "^1.4.8"
 
 [tool.poetry.dev-dependencies]
 mypy = "^0.910"

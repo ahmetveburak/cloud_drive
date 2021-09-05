@@ -106,6 +106,14 @@ python-versions = "*"
 django = "*"
 
 [[package]]
+name = "django-widget-tweaks"
+version = "1.4.8"
+description = "Tweak the form field rendering in templates, not in python-level form definitions."
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "idna"
 version = "3.2"
 description = "Internationalized Domain Names in Applications (IDNA)"
@@ -252,7 +260,7 @@ socks = ["PySocks (>=1.5.6,!=1.5.7,<2.0)"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "4cdb24318548e214a1f63b585a05d388e93418902dd6d0b657778fa5473a0129"
+content-hash = "68308417e61b2b1726cf83f1c2d5f6c7a8924cba58e1a0058f01ea553dc6fdd4"
 
 [metadata.files]
 appdirs = [
@@ -290,6 +298,10 @@ django = [
 django-tempus-dominus = [
     {file = "django-tempus-dominus-5.1.2.16.tar.gz", hash = "sha256:6833918a8b076292179b30a36bec147e06ad2aebd59c639ade0b29102fa40a5d"},
     {file = "django_tempus_dominus-5.1.2.16-py3-none-any.whl", hash = "sha256:1db4a8da59f6ff35f8de456676973edceeb3e34b532554aac7c19988fde4f37e"},
+]
+django-widget-tweaks = [
+    {file = "django-widget-tweaks-1.4.8.tar.gz", hash = "sha256:9f91ca4217199b7671971d3c1f323a2bec71a0c27dec6260b3c006fa541bc489"},
+    {file = "django_widget_tweaks-1.4.8-py2.py3-none-any.whl", hash = "sha256:f80bff4a8a59b278bb277a405a76a8b9a884e4bae7a6c70e78a39c626cd1c836"},
 ]
 idna = [
     {file = "idna-3.2-py3-none-any.whl", hash = "sha256:14475042e284991034cb48e06f6851428fb14c4dc953acd9be9a5e95c7b6dd7a"},
