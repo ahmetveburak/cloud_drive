@@ -47,7 +47,7 @@
           {% if  request.GET.token  %}
             <td>{{ request.build_absolute_uri }}</td>
           {% else %}
-            <td>{{ request.build_absolute_uri }}?token={{ token.token }}"</td>
+            <td>{{ request.build_absolute_uri }}?token={{ token.token }}</td>
           {% endif %}
           <td>{{ token.counter }}</td>
           <td>{{ token.enabled_count }}</td>
