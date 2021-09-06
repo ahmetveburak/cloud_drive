@@ -12,7 +12,6 @@ urlpatterns = [
     path("post/edit/<int:pk>/", post.PostEditView.as_view(), name="post-edit"),
     path("posts/", post.PostListView.as_view(), name="post-list"),
     #
-    path("file/new", file.FileCreateView.as_view(), name="file-create"),
     path("file/<int:pk>/<slug:slug>/", file.FileDetailView.as_view(), name="file-detail"),
     path("file/<int:pk>/", file.FileDetailAdminView.as_view(), name="file-detail-admin"),
     path("file/edit/<int:pk>/", file.FileEditView.as_view(), name="file-edit"),

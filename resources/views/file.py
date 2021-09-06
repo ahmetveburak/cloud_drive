@@ -1,20 +1,11 @@
-from typing import Any
-
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http.request import HttpRequest
-from django.http.response import Http404, HttpResponse
+from django.http.response import Http404
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, DetailView
+from django.views.generic import DetailView
 from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
 from resources.models import File
-
-
-class FileCreateView(CreateView):
-    template_name = "resources/file/file_create.html"
-    model = File
-    fields = ("name", "file", "is_private")
 
 
 class FileDetailView(DetailView):
