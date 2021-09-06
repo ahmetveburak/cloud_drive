@@ -31,7 +31,7 @@ class IndexView(TemplateView):
         file = self.request.FILES["file-file"]
 
         file_name = data.get("file-name")
-        is_private = True if data.get("file-is_private") else False
+        is_private = bool(data.get("file-is_private"))
 
         new_file = File(name=file_name, file=file, is_private=is_private)
         new_file.save()
