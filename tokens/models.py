@@ -17,23 +17,23 @@ class Token(models.Model):
         return f"{self.id} | {self.token[:10]}"
 
     def is_accessible(self) -> bool:
-        if self.is_enabled:
-            if self.counter < self.enabled_count:
-                self.counter += 1
-                if self.counter == self.enabled_count:
-                    self.is_enabled = False
-                self.save()
+        if not self.is_enabled:
+            return False
 
-                return True
+        if self.enabled_count == 0 and not self.enabled_to:
+            return True
 
-            elif self.enabled_to:
-                if (self.enabled_to - timezone.now()).days >= 0:
-                    return True
-
+        if self.counter < self.enabled_count:
+            self.counter += 1
+            if self.counter == self.enabled_count:
                 self.is_enabled = False
-                self.save()
+            self.save()
+            return True
 
-            elif self.enabled_count == 0 and not self.enabled_to:
+        if self.enabled_to:
+            if (self.enabled_to - timezone.now()).days >= 0:
                 return True
+            self.is_enabled = False
+            self.save()
 
         return False
