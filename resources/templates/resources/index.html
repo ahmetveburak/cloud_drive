@@ -20,6 +20,14 @@
 <body>
   {% block content %}
 
+    {% if request.GET.notfound == 'ok' %}
+      <div class="row justify-content-center mb-3 text-danger">
+        <h4>The link you looking for is expired :((</h4>
+      </div>
+        
+    {% endif %}
+
+
     <div class="row justify-content-center mb-3">
       <h2 class="font-weight-bold">Upload a New File</h2>
     </div>
