@@ -46,7 +46,7 @@ class Post(models.Model):
 
 class File(models.Model):
     name = models.CharField(_("File Name"), max_length=100, blank=True)
-    slug = models.SlugField(max_length=200, unique=True, null=True)
+    slug = models.SlugField(max_length=200, null=True)
     file = models.FileField(upload_to="files", validators=[file_size_validator])
     created = models.DateTimeField(auto_now_add=True)
     is_private = models.BooleanField(_("Private"), default=False)
