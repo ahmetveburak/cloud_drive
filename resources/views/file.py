@@ -19,7 +19,7 @@ class FileDetailView(DetailView):
             return obj
 
         if obj.is_private:
-            url_token = self.request.GET.dict().get("token")
+            url_token = self.request.GET.get("token")
             query = {"token": url_token, "is_enabled": True}
             token = get_object_or_404(obj.token.all(), **query)
             if token.is_accessible():

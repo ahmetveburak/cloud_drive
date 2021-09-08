@@ -5,16 +5,13 @@ from django.http.request import HttpRequest
 from django.http.response import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
-from django.utils import timezone
-from django.utils.crypto import get_random_string
-from django.utils.dateparse import parse_datetime
 from django.views.generic import CreateView, DetailView
 from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
 from resources.forms import PostCreateForm
 from resources.models import Post
+from resources.utils import add_token
 from tokens.forms import TokenCreateForm
-from tokens.models import Token
 
 
 class PostCreateView(CreateView):
@@ -41,20 +38,7 @@ class PostCreateView(CreateView):
         post_url = reverse("post-detail", kwargs={"pk": new_post.id, "slug": new_post.slug})
 
         if is_private:
-            exp_date = data.get("token-enabled_to")
-            if exp_date:
-                exp_date = timezone.make_aware(parse_datetime(exp_date))
-
-            exp_count = data.get("token-enabled_count")
-
-            new_token = Token(
-                token=get_random_string(length=32),
-                enabled_count=int(exp_count) if exp_count else 0,
-                enabled_to=exp_date if exp_date else None,
-            )
-            new_token.save()
-            new_post.token.add(new_token)
-
+            new_token = add_token(new_post, data)
             return redirect(f"{post_url}?token={new_token.token}")
 
         return redirect(post_url)
@@ -71,7 +55,7 @@ class PostDetailView(DetailView):
             return obj
 
         if obj.is_private:
-            url_token = self.request.GET.dict().get("token")
+            url_token = self.request.GET.get("token")
             query = {"token": url_token, "is_enabled": True}
             token = get_object_or_404(obj.token.all(), **query)
             if token.is_accessible():
