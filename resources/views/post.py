@@ -31,7 +31,7 @@ class PostCreateView(CreateView):
         post_title = data.get("post-title")
         post_content = data.get("post-content")
 
-        is_private = bool(data.get("file-is_private"))
+        is_private = bool(data.get("post-is_private"))
         new_post = Post(title=post_title, content=post_content, is_private=is_private)
         new_post.save()
 
